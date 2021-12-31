@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import './App.css';
+import { Link } from "react-router-dom";
 
 function App() {
-  const [quizs, setQuiz] = useState(
+  const [quizzes, setQuizzes] = useState(
     [{
       "created": "2020-09-09 09:26:39", // Date.now()
       "description": "Description",
@@ -85,13 +86,13 @@ function App() {
       "score": null,
       "title": "quiz title",
       "url": "https://www.youtube.com/watch?v=e6EGQFJLl04"
-    }])
-
+    }]);
 
   return (
-    <div className="App">
-        {quizs.map((quiz)=>(
+          <div className="App">
+        {quizzes.map((quiz)=>(
           <>
+           <button><Link to="/quizForm">Add Quiz</Link></button>
           <h1>quiz no: {quiz.id}</h1>
           <h2>{quiz.title}</h2>
           <h3>{quiz.description}</h3>
@@ -114,7 +115,9 @@ function App() {
          </>
         ))}
     </div>
+
   );
 }
 
 export default App;
+
