@@ -1,96 +1,15 @@
-import React, { useState } from 'react';
+import React, { useReducer, useState } from 'react';
 import './App.css';
 import { Link } from "react-router-dom";
+import { initialQuizState } from './reducer/state';
+import {  reducer } from './reducer';
 
 function App() {
-  const [quizzes, setQuizzes] = useState(
-    [{
-      "created": "2020-09-09 09:26:39", // Date.now()
-      "description": "Description",
-      "id": 29,
-      "modified": "2020-09-09 09:26:39", // Date.now()
-      "questions_answers": [
-        {
-          "answer_id": null,
-          "answers": [
-            {
-              "id": 122,
-              "is_true": false,
-              "text": "question 1 answer 1 false"
-            },
-            {
-              "id": 123,
-              "is_true": false,
-              "text": "question 1 answer 2 false"
-            },
-            {
-              "id": 124,
-              "is_true": true,
-              "text": "question 1 answer 3 true"
-            },
-            {
-              "id": 125,
-              "is_true": false,
-              "text": "question 1 answer 4 false"
-            }
-          ],
-          "feedback_false": "question 1 false feedback",
-          "feedback_true": "question 1 true feedback",
-          "id": 53,
-          "text": "question 1 text"
-        },
-        {
-          "answer_id": null,
-          "answers": [
-            {
-              "id": 126,
-              "is_true": true,
-              "text": "question 2 answer 1 true"
-            },
-            {
-              "id": 127,
-              "is_true": false,
-              "text": "question 2 answer 2 false"
-            }
-          ],
-          "feedback_false": "question 2 false feedback",
-          "feedback_true": "question 2 true feedback",
-          "id": 54,
-          "text": "question 2 text"
-        },
-        {
-          "answer_id": null,
-          "answers": [
-            {
-              "id": 128,
-              "is_true": false,
-              "text": "question 3 answer 1 false"
-            },
-            {
-              "id": 129,
-              "is_true": true,
-              "text": "question 3 answer 2 true"
-            },
-            {
-              "id": 130,
-              "is_true": false,
-              "text": "question 3 answer 3 false"
-            }
-          ],
-          "feedback_false": "question 3 false feedback",
-          "feedback_true": "question 3 true feedback",
-          "id": 55,
-          "text": "question 3 text"
-        }
-      ],
-      "score": null,
-      "title": "quiz title",
-      "url": "https://www.youtube.com/watch?v=e6EGQFJLl04"
-    }]);
+  const [state, dispatch] = useReducer(reducer, initialQuizState);
 
   return (
-          <div className="App">
-        {quizzes.map((quiz)=>(
+      <div className="App">
+        {state.map(quiz=>(
           <>
            <button><Link to="/quizForm">Add Quiz</Link></button>
           <h1>quiz no: {quiz.id}</h1>
@@ -98,10 +17,10 @@ function App() {
           <h3>{quiz.description}</h3>
           <h2>Created At: {quiz.created}</h2>
           <video src={quiz.url} width="320" height="240" controls />
-          {quiz.questions_answers.map((question_answer) => (
+          {quiz.questions_answers.map((question_answer: { text: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; answers: any[]; feedback_false: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; feedback_true: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; }) => (
             <>
              <h1>{question_answer.text}</h1>
-              {question_answer.answers.map((answer) => (
+              {question_answer.answers.map((answer: { text: string | number | readonly string[] | undefined; is_true: boolean | undefined; }) => (
                 <div>
                    <h5>answer.text</h5> 
                    <input type="radio" value={answer.text} checked={answer.is_true}/>
@@ -120,4 +39,5 @@ function App() {
 }
 
 export default App;
+
 

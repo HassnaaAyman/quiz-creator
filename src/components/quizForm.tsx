@@ -2,7 +2,9 @@ import react from 'react';
 
 const QuizForm = ()=>{
     return(
-        <>hassnaa</>
+        <form>
+            <input type="text" /> 
+        </form>
     )
 }
 
