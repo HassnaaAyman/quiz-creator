@@ -106,8 +106,6 @@ const QuizzForm = ({ quiz, handleSubmit, type }: { quiz: IState, handleSubmit: (
             }),
         );
     };
-
-    console.log({basicQuizInfo} , {quiz});
     
     return (
         <Container>

@@ -31,8 +31,6 @@ const ListQuizzes = () => {
                         </CardHeader>
                         <VideoContainer>
                             <ReactPlayer url={quiz.url} width="100%"/>
- 
-                            {/* <video src={quiz.url} width="100%" controls /> */}
                         </VideoContainer>
                         <ContentContainer>
                             <DescriptionContainer>
