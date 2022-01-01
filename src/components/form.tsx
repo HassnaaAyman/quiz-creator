@@ -16,7 +16,7 @@ const initialQuestionState = {
     text: '',
 };
 
-const QuizzForm = ({ quiz, handleSubmit}: { quiz: IState, handleSubmit: (quiz: Partial<IState>) => void })=>{
+const QuizzForm = ({ quiz, handleSubmit, type}: { quiz: IState, handleSubmit: (quiz: Partial<IState>) => void, type?:string })=>{
     
     const [basicQuizInfo, setBasicQuizInfo] = useState({
         title: quiz.title ,
@@ -25,22 +25,8 @@ const QuizzForm = ({ quiz, handleSubmit}: { quiz: IState, handleSubmit: (quiz: P
         score: null,
     });
     
-    const [questions, setQuestions] = useState([
-        {
-            answer_id: null,
-            id: Math.floor(Math.random() * 10000),
-            answers: [
-                {
-                    id: Math.floor(Math.random() * 10000),
-                    is_true: false,
-                    text: '',
-                },
-            ],
-            feedback_false: '',
-            feedback_true: '',
-            text: '',
-        },
-    ]);
+    const [questions, setQuestions] = useState(quiz.questions_answers);
+
     const handleBasicQuizInfoChange = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => {
             setBasicQuizInfo((prevState: any) => ({
@@ -86,7 +72,6 @@ const QuizzForm = ({ quiz, handleSubmit}: { quiz: IState, handleSubmit: (quiz: P
                             value &&
                             question.answers.find((answer) => answer.is_true)
                         ) {
-                            console.log(question.answers)
                             alert(
                                 'Can not have two truthy answer for the same question',
                             );
@@ -104,9 +89,11 @@ const QuizzForm = ({ quiz, handleSubmit}: { quiz: IState, handleSubmit: (quiz: P
         },
         [],
     );
+
     const addMoreQuestion = () => {
         setQuestions((prevState) => [...prevState, {...initialQuestionState, id: Math.floor(Math.random() * 10000)}]);
     };
+
     const addMoreAnswer = (i: number) => {
         setQuestions((prevState) =>
             prevState.map((question, index) => {
@@ -125,10 +112,11 @@ const QuizzForm = ({ quiz, handleSubmit}: { quiz: IState, handleSubmit: (quiz: P
         );
     };
 
+    
 
     return(
         <Container>
-        <h1>Create Quiz</h1>
+        <h1>{type === 'edit' ? 'Edit Quiz' : 'Create Quiz'}</h1>
         <Form>
 
             <label>Title:</label>
@@ -136,6 +124,7 @@ const QuizzForm = ({ quiz, handleSubmit}: { quiz: IState, handleSubmit: (quiz: P
                 type="text"
                 name="title"
                 onChange={handleBasicQuizInfoChange}
+                value={quiz.title}
             />
             <label>description:</label>
 
@@ -143,20 +132,24 @@ const QuizzForm = ({ quiz, handleSubmit}: { quiz: IState, handleSubmit: (quiz: P
                 type="text"
                 name="description"
                 onChange={handleBasicQuizInfoChange}
+                value={quiz.description}
+
             />
             <label>url:</label>
             <input
                 type="text"
                 name="url"
                 onChange={handleBasicQuizInfoChange}
+                value={quiz.url}
             />
 
-            {questions.map((question, index) => (
+            {questions.map((question, index) =>  (
                 <React.Fragment key={index}>
                     <label>question head:</label>
                     <input
                         type="text"
                         name="text"
+                        value={question.text}
                         onChange={(e) =>
                             handleBasicQuestionInputChange(e, index)
                         }
@@ -165,6 +158,7 @@ const QuizzForm = ({ quiz, handleSubmit}: { quiz: IState, handleSubmit: (quiz: P
                     <input
                         type="text"
                         name="feedback_false"
+                        value={question.feedback_false}
                         onChange={(e) =>
                             handleBasicQuestionInputChange(e, index)
                         }
@@ -173,6 +167,7 @@ const QuizzForm = ({ quiz, handleSubmit}: { quiz: IState, handleSubmit: (quiz: P
                     <input
                         type="text"
                         name="feedback_true"
+                        value={question.feedback_true}
                         onChange={(e) =>
                             handleBasicQuestionInputChange(e, index)
                         }
@@ -184,6 +179,7 @@ const QuizzForm = ({ quiz, handleSubmit}: { quiz: IState, handleSubmit: (quiz: P
                             <input
                                 type="text"
                                 name="text"
+                                value={answer.text}  
                                 onChange={(e) =>
                                     handleQuestionAnswersInputChange(
                                         e,
@@ -215,11 +211,11 @@ const QuizzForm = ({ quiz, handleSubmit}: { quiz: IState, handleSubmit: (quiz: P
             <button onClick={() => handleSubmit({
                 ...basicQuizInfo,
                 questions_answers: questions,
-            })}>Create Quiz</button>
+            })}>{type === 'edit' ? 'Edit Quiz' : 'Create Quiz'}</button>
         </Form>
     </Container>
     )
 }
 
 
-export default QuizzForm; 
+export default QuizzForm;

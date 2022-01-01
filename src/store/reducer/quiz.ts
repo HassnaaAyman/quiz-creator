@@ -33,8 +33,12 @@ export const quizReducer = (
             return state.concat(action.payload);
 
         case 'edit':
-            // find state id, then modify, then append
-            return {...state, ...action.payload};
+            return state.map(quiz => {
+                if (quiz.id === action.payload.id) {
+                    return action.payload;
+                }
+                return quiz
+            });
         default:
             throw new Error();
     }

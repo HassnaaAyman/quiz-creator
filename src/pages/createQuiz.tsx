@@ -1,4 +1,4 @@
-import React, {useCallback, useState } from 'react';
+import  {useCallback } from 'react';
 import { useQuizzesDispatch } from '../store/store';
 import Form from '../components/form'
 import { useNavigate } from "react-router-dom";
@@ -18,7 +18,7 @@ const initialQuestionState = {
     text: '',
 };
 const CreateQuiz = () => {
-    const history = useNavigate();
+    const navigate = useNavigate();
     const dispatch = useQuizzesDispatch()
   
 
@@ -33,7 +33,7 @@ const CreateQuiz = () => {
                 created: new Date().toISOString().split('T')[0],
             },
         });
-        history('/')
+        navigate('/')
     }, [dispatch]);
 
 
