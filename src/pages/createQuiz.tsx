@@ -1,5 +1,6 @@
-import {ChangeEvent, useCallback, useState} from 'react';
-import {useQuizzesDispatch} from '../store/store';
+import React, { ChangeEvent, useCallback, useState } from 'react';
+import { useQuizzesDispatch } from '../store/store';
+import { Container, Form, AnswersContainer } from '../style';
 
 const initialAnswerState = {
     id: 0,
@@ -52,10 +53,10 @@ const CreateQuiz = () => {
                 prevState.map((question, i) =>
                     i === index
                         ? {
-                              ...question,
-                              //@ts-ignore
-                              [e.target.name]: e.target.value,
-                          }
+                            ...question,
+                            //@ts-ignore
+                            [e.target.name]: e.target.value,
+                        }
                         : question,
                 ),
             );
@@ -117,6 +118,7 @@ const CreateQuiz = () => {
             }),
         );
     };
+
     const handleQuizCreation = useCallback(() => {
         dispatch({
             type: 'add',
@@ -127,10 +129,13 @@ const CreateQuiz = () => {
                 created: new Date().toISOString().split('T')[0],
             },
         });
+         window.location.href = '/'
     }, [basicQuizInfo, questions, dispatch]);
     return (
-        <>
-            <div>
+        <Container>
+            <h1>Create Quiz</h1>
+            <Form>
+
                 <label>Title:</label>
                 <input
                     type="text"
@@ -150,12 +155,10 @@ const CreateQuiz = () => {
                     name="url"
                     onChange={handleBasicQuizInfoChange}
                 />
-            </div>
-            <div>
+
                 {questions.map((question, index) => (
-                    <div key={index}>
-                <label>question head:</label>
-                        
+                    <React.Fragment key={index}>
+                        <label>question head:</label>
                         <input
                             type="text"
                             name="text"
@@ -171,7 +174,7 @@ const CreateQuiz = () => {
                                 handleBasicQuestionInputChange(e, index)
                             }
                         />
-                       <label>feedback_true:</label>
+                        <label>feedback_true:</label>
                         <input
                             type="text"
                             name="feedback_true"
@@ -179,11 +182,10 @@ const CreateQuiz = () => {
                                 handleBasicQuestionInputChange(e, index)
                             }
                         />
-                        <br />
-                        <br />
+
                         {question.answers.map((answer, answerIndex) => (
-                            <div key={answerIndex}>
-                              <label>answer head:</label>
+                            <AnswersContainer key={answerIndex}>
+                                <label>answer head:</label>
                                 <input
                                     type="text"
                                     name="text"
@@ -207,17 +209,20 @@ const CreateQuiz = () => {
                                         )
                                     }
                                 />
-                            </div>
+                            </AnswersContainer>
                         ))}
                         <button onClick={(e) => addMoreAnswer(index)}>
                             Add More Answer
                         </button>
-                    </div>
+                    </React.Fragment>
                 ))}
                 <button onClick={addMoreQuestion}>Add More Question</button>
-            </div>
-            <button onClick={handleQuizCreation}>Create Quiz</button>
-        </>
+                <button onClick={handleQuizCreation}>Create Quiz</button>
+            </Form>
+        </Container>
     );
 };
 export default CreateQuiz;
+
+
+
