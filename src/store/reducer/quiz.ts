@@ -1,6 +1,6 @@
 export type IState = {
     created: string;
-    modified: string;
+    modified: string | null;
     description: string;
     title: string;
     score: number | null;
@@ -30,9 +30,8 @@ export const quizReducer = (
 ): IState[] => {
     switch (action.type) {
         case 'add':
-            console.log(action.payload);
+            return state.concat(action.payload);
 
-            return {...state, ...action.payload};
         case 'edit':
             // find state id, then modify, then append
             return {...state, ...action.payload};
