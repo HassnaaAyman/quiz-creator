@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useCallback, useState } from 'react';
 import { IState } from '../store/reducer/quiz';
-import { Container, AnswersContainer, Form} from '../style';
+import { Container, AnswersContainer, Form } from '../style';
 
 
 const initialAnswerState = {
@@ -16,21 +16,14 @@ const initialQuestionState = {
     text: '',
 };
 
-const QuizzForm = ({ quiz, handleSubmit, type}: { quiz: IState, handleSubmit: (quiz: Partial<IState>) => void, type?:string })=>{
-    
-    const [basicQuizInfo, setBasicQuizInfo] = useState({
-        title: quiz.title ,
-        description: quiz.description,
-        url: quiz.url,
-        score: null,
-    });
-    
+const QuizzForm = ({ quiz, handleSubmit, type }: { quiz: IState, handleSubmit: (quiz: Partial<IState>) => void, type?: string }) => {
+
+    const [basicQuizInfo, setBasicQuizInfo] = useState(quiz);
+
     const [questions, setQuestions] = useState(quiz.questions_answers);
 
     const handleBasicQuizInfoChange = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => {
-            console.log(e.target.value);
-            
             setBasicQuizInfo((prevState: any) => ({
                 ...prevState,
                 [e.target.name]: e.target.value,
@@ -38,7 +31,7 @@ const QuizzForm = ({ quiz, handleSubmit, type}: { quiz: IState, handleSubmit: (q
         },
         [],
     );
- 
+
     const handleBasicQuestionInputChange = useCallback(
         (e: ChangeEvent<HTMLInputElement>, index: number) => {
             setQuestions((prevState) =>
@@ -93,7 +86,7 @@ const QuizzForm = ({ quiz, handleSubmit, type}: { quiz: IState, handleSubmit: (q
     );
 
     const addMoreQuestion = () => {
-        setQuestions((prevState) => [...prevState, {...initialQuestionState, id: Math.floor(Math.random() * 10000)}]);
+        setQuestions((prevState) => [...prevState, { ...initialQuestionState, id: Math.floor(Math.random() * 10000) }]);
     };
 
     const addMoreAnswer = (i: number) => {
@@ -114,108 +107,107 @@ const QuizzForm = ({ quiz, handleSubmit, type}: { quiz: IState, handleSubmit: (q
         );
     };
 
-    console.log({basicQuizInfo});
+    console.log({basicQuizInfo} , {quiz});
     
-
-    return(
+    return (
         <Container>
-        <h1>{type === 'edit' ? 'Edit Quiz' : 'Create Quiz'}</h1>
-        <Form>
-            <label>Title:</label>
-            <input
-                type="text"
-                name="title"
-                onChange={(e)=>handleBasicQuizInfoChange(e)}
-                value={quiz.title}
-            />
-            <label>description:</label>
+            <h1>{type === 'edit' ? 'Edit Quiz' : 'Create Quiz'}</h1>
+            <Form>
+                <label>Title:</label>
+                <input
+                    type="text"
+                    name="title"
+                    onChange={handleBasicQuizInfoChange}
+                    defaultValue={quiz.title}
+                />
+                <label>description:</label>
 
-            <input
-                type="text"
-                name="description"
-                onChange={handleBasicQuizInfoChange}
-                value={quiz.description}
+                <input
+                    type="text"
+                    name="description"
+                    onChange={handleBasicQuizInfoChange}
+                    defaultValue={quiz.description}
 
-            />
-            <label>url:</label>
-            <input
-                type="text"
-                name="url"
-                onChange={handleBasicQuizInfoChange}
-                value={quiz.url}
-            />
+                />
+                <label>url:</label>
+                <input
+                    type="text"
+                    name="url"
+                    onChange={handleBasicQuizInfoChange}
+                    defaultValue={quiz.url}
+                />
 
-            {questions.map((question, index) =>  (
-                <React.Fragment key={index}>
-                    <label>question head:</label>
-                    <input
-                        type="text"
-                        name="text"
-                        value={question.text}
-                        onChange={(e) =>
-                            handleBasicQuestionInputChange(e, index)
-                        }
-                    />
-                    <label>feedback_false:</label>
-                    <input
-                        type="text"
-                        name="feedback_false"
-                        value={question.feedback_false}
-                        onChange={(e) =>
-                            handleBasicQuestionInputChange(e, index)
-                        }
-                    />
-                    <label>feedback_true:</label>
-                    <input
-                        type="text"
-                        name="feedback_true"
-                        value={question.feedback_true}
-                        onChange={(e) =>
-                            handleBasicQuestionInputChange(e, index)
-                        }
-                    />
+                {questions.map((question, index) => (
+                    <React.Fragment key={index}>
+                        <label>question head:</label>
+                        <input
+                            type="text"
+                            name="text"
+                            value={question.text}
+                            onChange={(e) =>
+                                handleBasicQuestionInputChange(e, index)
+                            }
+                        />
+                        <label>feedback_false:</label>
+                        <input
+                            type="text"
+                            name="feedback_false"
+                            value={question.feedback_false}
+                            onChange={(e) =>
+                                handleBasicQuestionInputChange(e, index)
+                            }
+                        />
+                        <label>feedback_true:</label>
+                        <input
+                            type="text"
+                            name="feedback_true"
+                            value={question.feedback_true}
+                            onChange={(e) =>
+                                handleBasicQuestionInputChange(e, index)
+                            }
+                        />
 
-                    {question.answers.map((answer, answerIndex) => (
-                        <AnswersContainer key={answerIndex}>
-                            <label>answer head:</label>
-                            <input
-                                type="text"
-                                name="text"
-                                value={answer.text}  
-                                onChange={(e) =>
-                                    handleQuestionAnswersInputChange(
-                                        e,
-                                        index,
-                                        answerIndex,
-                                    )
-                                }
-                            />
-                            <input
-                                type="checkbox"
-                                name="is_true"
-                                checked={answer.is_true}
-                                onChange={(e) =>
-                                    handleQuestionAnswersInputChange(
-                                        e,
-                                        index,
-                                        answerIndex,
-                                    )
-                                }
-                            />
-                        </AnswersContainer>
-                    ))}
-                    <button onClick={(e) => addMoreAnswer(index)}>
-                        Add More Answer
-                    </button>
-                </React.Fragment>
-            ))}
-            <button onClick={addMoreQuestion}>Add More Question</button>
-            <button onClick={() => handleSubmit({
-                ...basicQuizInfo,
-                questions_answers: questions,
-            })}>{type === 'edit' ? 'Edit Quiz' : 'Create Quiz'}</button>
-        </Form>
-    </Container>
+                        {question.answers.map((answer, answerIndex) => (
+                            <AnswersContainer key={answerIndex}>
+                                <label>answer head:</label>
+                                <input
+                                    type="text"
+                                    name="text"
+                                    value={answer.text}
+                                    onChange={(e) =>
+                                        handleQuestionAnswersInputChange(
+                                            e,
+                                            index,
+                                            answerIndex,
+                                        )
+                                    }
+                                />
+                                <input
+                                    type="checkbox"
+                                    name="is_true"
+                                    checked={answer.is_true}
+                                    onChange={(e) =>
+                                        handleQuestionAnswersInputChange(
+                                            e,
+                                            index,
+                                            answerIndex,
+                                        )
+                                    }
+                                />
+                            </AnswersContainer>
+                        ))}
+                        <button onClick={(e) => addMoreAnswer(index)}>
+                            Add More Answer
+                        </button>
+                    </React.Fragment>
+                ))}
+                <button onClick={addMoreQuestion}>Add More Question</button>
+                <button onClick={() => handleSubmit({
+                    ...basicQuizInfo,
+                    questions_answers: questions,
+                })}>{type === 'edit' ? 'Edit Quiz' : 'Create Quiz'}</button>
+            </Form>
+        </Container>
     )
 }
 

@@ -22,7 +22,7 @@ display:flex;
 flex-direction:row; 
 align-items: center;
 `
-
+ 
 export const Head = styled.h1`
  color:black;
  text-align:center;
@@ -43,6 +43,7 @@ export const StyledLink = styled(Link)`
 export const QuizCard = styled.div`
 box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
 border-radius: 4px;
+margin-bottom:50px;
 `
 export const CardHeader = styled.div`
 display: flex;

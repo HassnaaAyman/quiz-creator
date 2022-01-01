@@ -1,22 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { useQuizzesState } from '../store/store';
 import { Container, Head, Button, StyledLink, QuizCard, CardHeader, TitleContainer, Title, ButtonContainer, EditButton, VideoContainer, ContentContainer, DescriptionContainer, AnswersContainer, Footer } from '../style';
+import ReactPlayer from 'react-player'
 
 const ListQuizzes = () => {
     const state = useQuizzesState();
 
-
     return (
         <Container>
             <Head>Quizzes</Head>
+
+            <Button>
+                <StyledLink to="/quizzes/create">Add Quiz</StyledLink>
+            </Button>
+
             {state.map((quiz) =>
             (
                 <React.Fragment key={quiz.id}>
-                    <Button>
-                        <StyledLink to="/quizzes/create">Add Quiz</StyledLink>
-                    </Button>
+
                     <QuizCard>
                         <CardHeader>
                             <TitleContainer>
@@ -28,7 +29,11 @@ const ListQuizzes = () => {
                                 </EditButton>
                             </ButtonContainer>
                         </CardHeader>
-                        <VideoContainer><video src={quiz.url} width="100%" controls /></VideoContainer>
+                        <VideoContainer>
+                            <ReactPlayer url={quiz.url} width="100%"/>
+ 
+                            {/* <video src={quiz.url} width="100%" controls /> */}
+                        </VideoContainer>
                         <ContentContainer>
                             <DescriptionContainer>
                                 <h2>Title: {quiz.title}</h2>
@@ -43,7 +48,7 @@ const ListQuizzes = () => {
                                             <input
                                                 type="radio"
                                                 value={answer.text}
-                                                checked={answer.is_true}
+                                                defaultChecked={answer.is_true}
                                             />
                                         </AnswersContainer>
                                     ))}
