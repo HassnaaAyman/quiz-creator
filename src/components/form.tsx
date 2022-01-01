@@ -29,6 +29,8 @@ const QuizzForm = ({ quiz, handleSubmit, type}: { quiz: IState, handleSubmit: (q
 
     const handleBasicQuizInfoChange = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => {
+            console.log(e.target.value);
+            
             setBasicQuizInfo((prevState: any) => ({
                 ...prevState,
                 [e.target.name]: e.target.value,
@@ -112,18 +114,18 @@ const QuizzForm = ({ quiz, handleSubmit, type}: { quiz: IState, handleSubmit: (q
         );
     };
 
+    console.log({basicQuizInfo});
     
 
     return(
         <Container>
         <h1>{type === 'edit' ? 'Edit Quiz' : 'Create Quiz'}</h1>
         <Form>
-
             <label>Title:</label>
             <input
                 type="text"
                 name="title"
-                onChange={handleBasicQuizInfoChange}
+                onChange={(e)=>handleBasicQuizInfoChange(e)}
                 value={quiz.title}
             />
             <label>description:</label>
